@@ -864,8 +864,7 @@ class WiFiScanner:
                 for row in csvReader:
                     self.stored.append(
                         (
-                            row[1],   # BSSID
-                            row[2]    # ESSID
+                            row[1]
                         )
                     )
         except FileNotFoundError:
@@ -1024,7 +1023,10 @@ class WiFiScanner:
                 network['Security type'], network['Level'],
                 deviceName, model
             )
-            if network['WPS locked']:
+
+            if network['BSSID'] in self.stored:
+                print(colored(line, color='yellow'))
+            elif network['WPS locked']:
                 print(colored(line, color='red'))
             elif self.vuln_list and (model in self.vuln_list):
                 print(colored(line, color='green'))
